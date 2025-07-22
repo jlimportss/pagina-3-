@@ -3,45 +3,46 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Precios JL Imports</title>
+<title>JL Imports - Precios Perfumes</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background: #f9f9f9;
+    background: #f5f5f5;
   }
-  h1 {
+  h2 {
     text-align: center;
+    margin-bottom: 15px;
   }
   .btn-group {
     text-align: center;
     margin-bottom: 15px;
   }
   button {
-    padding: 8px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 2px solid #007BFF;
+    border: 1px solid #007BFF;
     background-color: white;
     color: #007BFF;
-    border-radius: 5px;
+    padding: 8px 18px;
+    margin: 0 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
   }
   button.active {
     background-color: #007BFF;
     color: white;
   }
   table {
-    width: 100%;
     border-collapse: collapse;
-    max-width: 800px;
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
-    background: white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    background-color: white;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
   }
   th, td {
     border: 1px solid #ddd;
-    padding: 8px 12px;
+    padding: 9px 12px;
     text-align: left;
   }
   th {
@@ -52,22 +53,22 @@
 </head>
 <body>
 
-<h1>Precios Perfumes JL Imports</h1>
+<h2>JL IMPORTS - PRECIOS PERFUMES</h2>
 
 <div class="btn-group">
-  <button id="btnMayorista" class="active" onclick="setPrecio('mayorista')">Mayorista (+6 und)</button>
-  <button id="btnMinorista" onclick="setPrecio('minorista')">Minorista (und)</button>
+  <button id="btnMayorista" class="active" onclick="setTipoPrecio('mayorista')">MAYORISTA</button>
+  <button id="btnMinorista" onclick="setTipoPrecio('minorista')">MINORISTA</button>
 </div>
 
 <table>
   <thead>
     <tr>
       <th>Perfume</th>
-      <th id="precioHeader">Precio Mayorista (USD)</th>
+      <th id="headerPrecio">Precio Mayorista (USD)</th>
     </tr>
   </thead>
-  <tbody id="tablaBody">
-    <!-- Datos se agregan por JS -->
+  <tbody id="tablaPerfumes">
+    <!-- Se llena con JS -->
   </tbody>
 </table>
 
@@ -176,25 +177,22 @@
     { nombre: "dubai night", mayor: 68.75, minor: 78.57 }
   ];
 
-  let tipoPrecio = 'mayorista'; // por defecto mostrar mayorista
+  let tipoPrecio = 'mayorista';
 
-  function setPrecio(tipo) {
+  function setTipoPrecio(tipo) {
     tipoPrecio = tipo;
 
-    // Cambiar clases botón activo
     document.getElementById('btnMayorista').classList.toggle('active', tipo === 'mayorista');
     document.getElementById('btnMinorista').classList.toggle('active', tipo === 'minorista');
 
-    // Cambiar encabezado
-    const header = document.getElementById('precioHeader');
+    const header = document.getElementById('headerPrecio');
     header.textContent = tipo === 'mayorista' ? 'Precio Mayorista (USD)' : 'Precio Minorista (USD)';
 
-    // Actualizar tabla
-    cargarTabla();
+    llenarTabla();
   }
 
-  function cargarTabla() {
-    const tbody = document.getElementById('tablaBody');
+  function llenarTabla() {
+    const tbody = document.getElementById('tablaPerfumes');
     tbody.innerHTML = '';
 
     perfumes.forEach(p => {
@@ -213,8 +211,8 @@
     });
   }
 
-  // Inicializar tabla al cargar
-  cargarTabla();
+  // Inicializar tabla al cargar la página
+  llenarTabla();
 </script>
 
 </body>
