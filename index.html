@@ -1,219 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JL Imports - Precios Perfumes</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: #f5f5f5;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  .btn-group {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  button {
-    border: 1px solid #007BFF;
-    background-color: white;
-    color: #007BFF;
-    padding: 8px 18px;
-    margin: 0 8px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  button.active {
-    background-color: #007BFF;
-    color: white;
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: white;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 9px 12px;
-    text-align: left;
-  }
-  th {
-    background-color: #007BFF;
-    color: white;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JL Imports - Precios Perfumes</title>
+  <style>
+    body {
+      font-family: Calibri, sans-serif;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      border: 1px solid black;
+      padding: 40px;
+      width: 600px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 30px;
+    }
+    .btn-group {
+      margin-bottom: 15px;
+    }
+    .btn-group button {
+      padding: 6px 14px;
+      margin: 0 5px;
+      border: 1px solid black;
+      background-color: white;
+      cursor: pointer;
+    }
+    .btn-group button.active {
+      background-color: black;
+      color: white;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border: 1px solid black;
+    }
+    .precio {
+      font-size: 22px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<h2>JL IMPORTS - PRECIOS PERFUMES</h2>
+  <div class="container">
+    <h2>JL IMPORTS</h2>
 
-<div class="btn-group">
-  <button id="btnMayorista" class="active" onclick="setTipoPrecio('mayorista')">MAYORISTA</button>
-  <button id="btnMinorista" onclick="setTipoPrecio('minorista')">MINORISTA</button>
-</div>
+    <div class="btn-group">
+      <button id="btnMayorista" class="active" onclick="setTipoPrecio('mayorista')">MAYORISTA</button>
+      <button id="btnMinorista" onclick="setTipoPrecio('minorista')">MINORISTA</button>
+    </div>
+    <p>HAGA CLICK PARA ELEGIR</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Perfume</th>
-      <th id="headerPrecio">Precio Mayorista (USD)</th>
-    </tr>
-  </thead>
-  <tbody id="tablaPerfumes">
-    <!-- Se llena con JS -->
-  </tbody>
-</table>
+    <input type="text" id="buscador" placeholder="BUSCA TU PERFUME" oninput="buscarPerfume()">
 
-<script>
-  const perfumes = [
-    { nombre: "9pm", mayor: 45.63, minor: 52.14 },
-    { nombre: "khamrah", mayor: 45.00, minor: 51.43 },
-    { nombre: "asad", mayor: 32.50, minor: 37.14 },
-    { nombre: "yara", mayor: 44.38, minor: 50.71 },
-    { nombre: "club de nuit", mayor: 45.00, minor: 51.43 },
-    { nombre: "amber oud 60ml", mayor: 54.38, minor: 62.14 },
-    { nombre: "mandarin", mayor: 46.88, minor: 53.57 },
-    { nombre: "honor and glory", mayor: 36.25, minor: 41.43 },
-    { nombre: "fakhar", mayor: 41.88, minor: 47.86 },
-    { nombre: "asad bourbon", mayor: 48.13, minor: 55.00 },
-    { nombre: "oud for glory", mayor: 43.13, minor: 49.29 },
-    { nombre: "turathi blue 90ml", mayor: 43.13, minor: 49.29 },
-    { nombre: "amber oud 120ml", mayor: 68.75, minor: 78.57 },
-    { nombre: "amber oud 75 Ge", mayor: 63.75, minor: 72.86 },
-    { nombre: "9PM Pour Femme", mayor: 40.00, minor: 45.71 },
-    { nombre: "bharara king", mayor: 70.63, minor: 80.71 },
-    { nombre: "viking cairo", mayor: 80.00, minor: 91.43 },
-    { nombre: "9 pm rebel", mayor: 48.13, minor: 55.00 },
-    { nombre: "9 (am)", mayor: 42.50, minor: 48.57 },
-    { nombre: "sublime", mayor: 33.13, minor: 37.86 },
-    { nombre: "amber oud 200ml", mayor: 90.00, minor: 102.86 },
-    { nombre: "qaed 90ml", mayor: 31.25, minor: 35.71 },
-    { nombre: "aqua dubai 100ml", mayor: 58.75, minor: 67.14 },
-    { nombre: "asad zanzibar", mayor: 31.25, minor: 35.71 },
-    { nombre: "khamrah qahwa", mayor: 48.13, minor: 55.00 },
-    { nombre: "yara tous", mayor: 27.50, minor: 31.43 },
-    { nombre: "yara candy", mayor: 27.50, minor: 31.43 },
-    { nombre: "hayati maleki", mayor: 28.75, minor: 32.86 },
-    { nombre: "Scandal JPG Le Parfum", mayor: 113.75, minor: 130.00 },
-    { nombre: "Le male elixir 125", mayor: 137.50, minor: 157.14 },
-    { nombre: "Gentleman EDP", mayor: 103.75, minor: 118.57 },
-    { nombre: "Gentleman EDP 60ml", mayor: 85.00, minor: 97.14 },
-    { nombre: "Armani Profondo 105 EDP", mayor: 138.75, minor: 158.57 },
-    { nombre: "Sauvage EDP", mayor: 138.75, minor: 158.57 },
-    { nombre: "Sauvage Edt", mayor: 115.00, minor: 131.43 },
-    { nombre: "Sauvage Elixir 60ml", mayor: 160.00, minor: 182.86 },
-    { nombre: "212 vip black", mayor: 91.25, minor: 104.29 },
-    { nombre: "club de nuit iconic", mayor: 53.75, minor: 61.43 },
-    { nombre: "club de nuit untold", mayor: 53.75, minor: 61.43 },
-    { nombre: "club de nuit urban elixir", mayor: 46.88, minor: 53.57 },
-    { nombre: "anfar date night", mayor: 55.00, minor: 62.86 },
-    { nombre: "the most wanted edp inten", mayor: 112.50, minor: 128.57 },
-    { nombre: "the most wanted parfum", mayor: 101.25, minor: 115.71 },
-    { nombre: "bvlgary man in black edp", mayor: 116.25, minor: 132.86 },
-    { nombre: "amethyst", mayor: 43.13, minor: 49.29 },
-    { nombre: "mayar", mayor: 32.50, minor: 37.14 },
-    { nombre: "hawas", mayor: 35.00, minor: 40.00 },
-    { nombre: "erba pura", mayor: 256.25, minor: 292.86 },
-    { nombre: "atlas 55ml", mayor: 63.75, minor: 72.86 },
-    { nombre: "philos pura", mayor: 28.75, minor: 32.86 },
-    { nombre: "precieux", mayor: 61.25, minor: 70.00 },
-    { nombre: "alpine", mayor: 28.75, minor: 32.86 },
-    { nombre: "club de nuit sillage", mayor: 46.25, minor: 52.86 },
-    { nombre: "glacier ultra", mayor: 28.75, minor: 32.86 },
-    { nombre: "Eclaire", mayor: 55.00, minor: 62.86 },
-    { nombre: "bharara king gold", mayor: 91.25, minor: 104.29 },
-    { nombre: "Jean Lowe Immortale", mayor: 41.25, minor: 47.14 },
-    { nombre: "Salvo", mayor: 21.88, minor: 25.00 },
-    { nombre: "Yeah (Y  YSL)", mayor: 32.50, minor: 37.14 },
-    { nombre: "9pm kit", mayor: 63.75, minor: 72.86 },
-    { nombre: "9 am kit", mayor: 55.00, minor: 62.86 },
-    { nombre: "hawas ice", mayor: 42.50, minor: 48.57 },
-    { nombre: "yara pink + candy kit", mayor: 53.75, minor: 61.43 },
-    { nombre: "kit amber oud 75ml", mayor: 95.00, minor: 108.57 },
-    { nombre: "kit armaf 30ml", mayor: 88.75, minor: 101.43 },
-    { nombre: "game of spade win", mayor: 113.75, minor: 130.00 },
-    { nombre: "parfums de marly layton", mayor: 375.00, minor: 428.57 },
-    { nombre: "burberry hero edp", mayor: 113.75, minor: 130.00 },
-    { nombre: "ck shock", mayor: 35.00, minor: 40.00 },
-    { nombre: "club de nuit femenino", mayor: 41.25, minor: 47.14 },
-    { nombre: "a men femenino", mayor: 147.50, minor: 168.57 },
-    { nombre: "club de nuit intense fem", mayor: 38.75, minor: 44.29 },
-    { nombre: "odessey candee edp", mayor: 56.25, minor: 64.29 },
-    { nombre: "noble blush badee al oud", mayor: 31.25, minor: 35.71 },
-    { nombre: "club de nuit 200 ml", mayor: 67.50, minor: 77.14 },
-    { nombre: "one million parfum", mayor: 92.50, minor: 105.71 },
-    { nombre: "odessey mega", mayor: 48.75, minor: 55.71 },
-    { nombre: "jpg le male le parfum", mayor: 97.50, minor: 111.43 },
-    { nombre: "vintage radio", mayor: 40.00, minor: 45.71 },
-    { nombre: "pure aruba", mayor: 41.25, minor: 47.14 },
-    { nombre: "confidential gold", mayor: 30.00, minor: 34.29 },
-    { nombre: "haya rosa", mayor: 32.50, minor: 37.14 },
-    { nombre: "hayaati florence", mayor: 32.50, minor: 37.14 },
-    { nombre: "orientica amber rouge 80", mayor: 80.63, minor: 92.14 },
-    { nombre: "delilah", mayor: 31.25, minor: 35.71 },
-    { nombre: "musamam", mayor: 57.50, minor: 65.71 },
-    { nombre: "oud saffron", mayor: 85.00, minor: 97.14 },
-    { nombre: "aqua dubai 100ml", mayor: 66.88, minor: 76.43 },
-    { nombre: "fakhar gold", mayor: 32.50, minor: 37.14 },
-    { nombre: "sakeena edp", mayor: 31.25, minor: 35.71 },
-    { nombre: "mayar natural", mayor: 37.50, minor: 42.86 },
-    { nombre: "club de nuit imperiale", mayor: 46.25, minor: 52.86 },
-    { nombre: "hawas for her", mayor: 61.25, minor: 70.00 },
-    { nombre: "9am femenino", mayor: 41.25, minor: 47.14 },
-    { nombre: "spicebomb extreme", mayor: 112.50, minor: 128.57 },
-    { nombre: "mercedes club black", mayor: 55.00, minor: 62.86 },
-    { nombre: "b.a.d maison", mayor: 27.50, minor: 31.43 },
-    { nombre: "panther", mayor: 27.50, minor: 31.43 },
-    { nombre: "fakhar gold", mayor: 41.25, minor: 47.14 },
-    { nombre: "turathi brown 90 ml", mayor: 45.00, minor: 51.43 },
-    { nombre: "dubai night", mayor: 68.75, minor: 78.57 }
-  ];
+    <div class="precio" id="precioMostrado">PRECIO: -</div>
+  </div>
 
-  let tipoPrecio = 'mayorista';
+  <script>
+    const perfumes = [
+      { nombre: "9pm", mayor: 45.63, minor: 52.14 },
+      { nombre: "khamrah", mayor: 45.00, minor: 51.43 },
+      { nombre: "asad", mayor: 32.50, minor: 37.14 },
+      { nombre: "yara", mayor: 44.38, minor: 50.71 },
+      { nombre: "club de nuit", mayor: 45.00, minor: 51.43 },
+      // Podés agregar más perfumes aquí...
+    ];
 
-  function setTipoPrecio(tipo) {
-    tipoPrecio = tipo;
+    const cotizacionUSD = 1340; // Valor del dólar oculto
 
-    document.getElementById('btnMayorista').classList.toggle('active', tipo === 'mayorista');
-    document.getElementById('btnMinorista').classList.toggle('active', tipo === 'minorista');
+    let tipoPrecio = 'mayorista';
 
-    const header = document.getElementById('headerPrecio');
-    header.textContent = tipo === 'mayorista' ? 'Precio Mayorista (USD)' : 'Precio Minorista (USD)';
+    function setTipoPrecio(tipo) {
+      tipoPrecio = tipo;
+      document.getElementById('btnMayorista').classList.toggle('active', tipo === 'mayorista');
+      document.getElementById('btnMinorista').classList.toggle('active', tipo === 'minorista');
+      buscarPerfume(); // Actualiza el precio al cambiar
+    }
 
-    llenarTabla();
-  }
+    function buscarPerfume() {
+      const input = document.getElementById('buscador').value.trim().toLowerCase();
+      const perfume = perfumes.find(p => p.nombre.toLowerCase().includes(input));
+      const divPrecio = document.getElementById('precioMostrado');
 
-  function llenarTabla() {
-    const tbody = document.getElementById('tablaPerfumes');
-    tbody.innerHTML = '';
-
-    perfumes.forEach(p => {
-      const tr = document.createElement('tr');
-
-      const tdNombre = document.createElement('td');
-      tdNombre.textContent = p.nombre;
-      tr.appendChild(tdNombre);
-
-      const tdPrecio = document.createElement('td');
-      const precio = tipoPrecio === 'mayorista' ? p.mayor : p.minor;
-      tdPrecio.textContent = `$ ${precio.toFixed(2)}`;
-      tr.appendChild(tdPrecio);
-
-      tbody.appendChild(tr);
-    });
-  }
-
-  // Inicializar tabla al cargar la página
-  llenarTabla();
-</script>
+      if (perfume) {
+        const precioUSD = tipoPrecio === 'mayorista' ? perfume.mayor : perfume.minor;
+        const precioARS = precioUSD * cotizacionUSD;
+        divPrecio.textContent = `PRECIO: $ ${Math.round(precioARS)} ARS`;
+      } else {
+        divPrecio.textContent = 'PRECIO: -';
+      }
+    }
+  </script>
 
 </body>
 </html>
