@@ -1,112 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JL Imports - Precios Perfumes</title>
-  <style>
-    body {
-      font-family: Calibri, sans-serif;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      border: 1px solid black;
-      padding: 40px;
-      width: 600px;
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 30px;
-    }
-    .btn-group {
-      margin-bottom: 15px;
-    }
-    .btn-group button {
-      padding: 6px 14px;
-      margin: 0 5px;
-      border: 1px solid black;
-      background-color: white;
-      cursor: pointer;
-    }
-    .btn-group button.active {
-      background-color: black;
-      color: white;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      font-size: 16px;
-      border: 1px solid black;
-    }
-    .precio {
-      font-size: 22px;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>JL Imports - Lista de Precios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .button-group {
+            margin-top: 10px;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-group button.active {
+            background-color: #007bff;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 15px;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr.hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="container">
-    <h2>JL IMPORTS</h2>
-
-    <div class="btn-group">
-      <button id="btnMayorista" class="active" onclick="setTipoPrecio('mayorista')">MAYORISTA</button>
-      <button id="btnMinorista" onclick="setTipoPrecio('minorista')">MINORISTA</button>
+    <h1>JL Imports - Lista de Precios</h1>
+    <div class="controls">
+        <input type="text" id="searchBox" placeholder="Buscar perfume y presionar ENTER">
+        <div class="button-group">
+            <button onclick="setPriceType('mayorista')" class="active">Mayorista</button>
+            <button onclick="setPriceType('minorista')">Minorista</button>
+        </div>
     </div>
-    <p>HAGA CLICK PARA ELEGIR</p>
+    <table id="perfumeTable">
+        <thead>
+            <tr>
+                <th>Perfume</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody id="perfumeBody">
+            <!-- Las filas se insertan dinámicamente con JS -->
+        </tbody>
+    </table>
 
-    <input type="text" id="buscador" placeholder="BUSCA TU PERFUME" oninput="buscarPerfume()">
+    <script>
+        const cotizacion = 1340;
+        const perfumes = [
+            { nombre: "9pm", mayor: 45.63, menor: 52.14 },
+            { nombre: "khamrah", mayor: 45.00, menor: 51.43 },
+            { nombre: "asad", mayor: 32.50, menor: 37.14 },
+            { nombre: "yara", mayor: 44.38, menor: 50.71 },
+            { nombre: "club de nuit", mayor: 45.00, menor: 51.43 },
+            { nombre: "amber oud 60ml", mayor: 54.38, menor: 62.14 },
+            { nombre: "mandarin", mayor: 46.88, menor: 53.57 },
+            { nombre: "honor and glory", mayor: 36.25, menor: 41.43 },
+            { nombre: "fakhar", mayor: 41.88, menor: 47.86 },
+            { nombre: "asad bourbon", mayor: 48.13, menor: 55.00 },
+            { nombre: "oud for glory", mayor: 43.13, menor: 49.29 },
+            { nombre: "turathi blue 90ml", mayor: 43.13, menor: 49.29 },
+            { nombre: "amber oud 120ml", mayor: 68.75, menor: 78.57 },
+            { nombre: "amber oud 75 Ge", mayor: 63.75, menor: 72.86 },
+            { nombre: "9PM Pour Femme", mayor: 40.00, menor: 45.71 },
+            { nombre: "bharara king", mayor: 70.63, menor: 80.71 },
+            { nombre: "viking cairo", mayor: 80.00, menor: 91.43 },
+            { nombre: "9 pm rebel", mayor: 48.13, menor: 55.00 },
+            { nombre: "9 (am)", mayor: 42.50, menor: 48.57 },
+            { nombre: "sublime", mayor: 33.13, menor: 37.86 },
+            { nombre: "amber oud 200ml", mayor: 90.00, menor: 102.86 },
+            { nombre: "qaed 90ml", mayor: 31.25, menor: 35.71 },
+            { nombre: "aqua dubai 100ml", mayor: 58.75, menor: 67.14 },
+            { nombre: "asad zanzibar", mayor: 31.25, menor: 35.71 },
+            { nombre: "khamrah qahwa", mayor: 48.13, menor: 55.00 },
+            { nombre: "yara tous", mayor: 27.50, menor: 31.43 },
+            { nombre: "yara candy", mayor: 27.50, menor: 31.43 },
+            { nombre: "hayati maleki", mayor: 28.75, menor: 32.86 },
+            { nombre: "Scandal JPG Le Parfum", mayor: 113.75, menor: 130.00 },
+            { nombre: "Le male elixir 125", mayor: 137.50, menor: 157.14 },
+            { nombre: "Gentleman EDP", mayor: 103.75, menor: 118.57 },
+            { nombre: "Gentleman EDP 60ml", mayor: 85.00, menor: 97.14 },
+            { nombre: "Armani Profondo 105 EDP", mayor: 138.75, menor: 158.57 },
+            { nombre: "Sauvage EDP", mayor: 138.75, menor: 158.57 },
+            { nombre: "Sauvage Edt", mayor: 115.00, menor: 131.43 },
+            { nombre: "Sauvage Elixir 60ml", mayor: 160.00, menor: 182.86 },
+            { nombre: "212 vip black", mayor: 91.25, menor: 104.29 },
+            { nombre: "club de nuit iconic", mayor: 53.75, menor: 61.43 },
+            { nombre: "club de nuit untold", mayor: 53.75, menor: 61.43 },
+            { nombre: "club de nuit urban elixir", mayor: 46.88, menor: 53.57 },
+            { nombre: "anfar date night", mayor: 55.00, menor: 62.86 }
+            // Podés seguir agregando el resto de perfumes siguiendo el mismo formato.
+        ];
 
-    <div class="precio" id="precioMostrado">PRECIO: -</div>
-  </div>
+        let priceType = 'mayor';
 
-  <script>
-    const perfumes = [
-      { nombre: "9pm", mayor: 45.63, minor: 52.14 },
-      { nombre: "khamrah", mayor: 45.00, minor: 51.43 },
-      { nombre: "asad", mayor: 32.50, minor: 37.14 },
-      { nombre: "yara", mayor: 44.38, minor: 50.71 },
-      { nombre: "club de nuit", mayor: 45.00, minor: 51.43 },
-      // Podés agregar más perfumes aquí...
-    ];
+        function setPriceType(type) {
+            priceType = type === 'mayorista' ? 'mayor' : 'menor';
+            document.querySelectorAll(".button-group button").forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+        }
 
-    const cotizacionUSD = 1340; // Valor del dólar oculto
+        function renderResults(searchTerm) {
+            const body = document.getElementById("perfumeBody");
+            body.innerHTML = "";
 
-    let tipoPrecio = 'mayorista';
+            perfumes.forEach(perfume => {
+                if (perfume.nombre.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    const tr = document.createElement("tr");
+                    const tdName = document.createElement("td");
+                    const tdPrice = document.createElement("td");
 
-    function setTipoPrecio(tipo) {
-      tipoPrecio = tipo;
-      document.getElementById('btnMayorista').classList.toggle('active', tipo === 'mayorista');
-      document.getElementById('btnMinorista').classList.toggle('active', tipo === 'minorista');
-      buscarPerfume(); // Actualiza el precio al cambiar
-    }
+                    tdName.textContent = perfume.nombre;
+                    tdPrice.textContent = "$" + (perfume[priceType] * cotizacion).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-    function buscarPerfume() {
-  const input = document.getElementById('buscador').value.trim().toLowerCase();
-  const divPrecio = document.getElementById('precioMostrado');
+                    tr.appendChild(tdName);
+                    tr.appendChild(tdPrice);
+                    body.appendChild(tr);
+                }
+            });
+        }
 
-  if (input === "") {
-    divPrecio.textContent = 'PRECIO: -';
-    return;
-  }
-
-  const perfume = perfumes.find(p => p.nombre.toLowerCase().includes(input));
-
-  if (perfume) {
-    const precioUSD = tipoPrecio === 'mayorista' ? perfume.mayor : perfume.minor;
-    const precioARS = precioUSD * cotizacionUSD;
-    divPrecio.textContent = `PRECIO: $ ${Math.round(precioARS)} ARS`;
-  } else {
-    divPrecio.textContent = 'PRECIO: -';
-  }
-}
-  </script>
-
+        document.getElementById("searchBox").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                renderResults(this.value);
+            }
+        });
+    </script>
 </body>
 </html>
