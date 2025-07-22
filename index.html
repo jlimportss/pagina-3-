@@ -88,18 +88,24 @@
     }
 
     function buscarPerfume() {
-      const input = document.getElementById('buscador').value.trim().toLowerCase();
-      const perfume = perfumes.find(p => p.nombre.toLowerCase().includes(input));
-      const divPrecio = document.getElementById('precioMostrado');
+  const input = document.getElementById('buscador').value.trim().toLowerCase();
+  const divPrecio = document.getElementById('precioMostrado');
 
-      if (perfume) {
-        const precioUSD = tipoPrecio === 'mayorista' ? perfume.mayor : perfume.minor;
-        const precioARS = precioUSD * cotizacionUSD;
-        divPrecio.textContent = `PRECIO: $ ${Math.round(precioARS)} ARS`;
-      } else {
-        divPrecio.textContent = 'PRECIO: -';
-      }
-    }
+  if (input === "") {
+    divPrecio.textContent = 'PRECIO: -';
+    return;
+  }
+
+  const perfume = perfumes.find(p => p.nombre.toLowerCase().includes(input));
+
+  if (perfume) {
+    const precioUSD = tipoPrecio === 'mayorista' ? perfume.mayor : perfume.minor;
+    const precioARS = precioUSD * cotizacionUSD;
+    divPrecio.textContent = `PRECIO: $ ${Math.round(precioARS)} ARS`;
+  } else {
+    divPrecio.textContent = 'PRECIO: -';
+  }
+}
   </script>
 
 </body>
