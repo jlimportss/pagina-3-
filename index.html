@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JL Imports - Buscador de Perfumes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 90%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    #precio {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 15px;
+    }
+
+    small {
+      display: block;
+      margin-top: 5px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>JLImports - Buscador de Perfumes</h1>
+    <input type="number" id="cotizacion" value="1340" placeholder="Cotización del dólar" />
+    <input type="text" id="buscador" placeholder="Escribí el nombre del perfume" />
+    <small>Ejemplo: khamrah, 9pm, club de nuit...</small>
+    <div id="precio">–</div>
+  </div>
+
+  <script>
+    const productos = [
+      { nombre: "9pm", precio_dolar: 36.5 },
+      { nombre: "khamrah", precio_dolar: 36 },
+      { nombre: "asad", precio_dolar: 26 },
+      { nombre: "yara", precio_dolar: 35.5 },
+      { nombre: "club de nuit", precio_dolar: 36 },
+      { nombre: "amber oud 60ml", precio_dolar: 43.5 },
+      { nombre: "mandarin", precio_dolar: 37.5 },
+      { nombre: "honor and glory", precio_dolar: 29 },
+      { nombre: "fakhar", precio_dolar: 33.5 },
+      { nombre: "asad bourbon", precio_dolar: 38.5 },
+      { nombre: "oud for glory", precio_dolar: 34.5 },
+      { nombre: "turathi blue 90ml", precio_dolar: 34.5 },
+      { nombre: "amber oud 120ml", precio_dolar: 55 },
+      { nombre: "amber oud 75 ge", precio_dolar: 51 },
+      { nombre: "9pm pour femme", precio_dolar: 32 },
+      { nombre: "bharara king", precio_dolar: 56.5 },
+      { nombre: "viking cairo", precio_dolar: 64 },
+      { nombre: "9 pm rebel", precio_dolar: 38.5 },
+      { nombre: "9 (am)", precio_dolar: 34 },
+      { nombre: "sublime", precio_dolar: 26.5 },
+      { nombre: "amber oud 200ml", precio_dolar: 72 },
+      { nombre: "qaed 90ml", precio_dolar: 25 },
+      { nombre: "aqua dubai 100ml", precio_dolar: 53.5 },
+      { nombre: "asad zanzibar", precio_dolar: 25 },
+      { nombre: "khamrah qahwa", precio_dolar: 38.5 },
+      { nombre: "yara tous", precio_dolar: 22 },
+      { nombre: "yara candy", precio_dolar: 22 },
+      { nombre: "hayati maleki", precio_dolar: 23 },
+      { nombre: "scandal jpg le parfum", precio_dolar: 91 },
+      { nombre: "le male elixir 125", precio_dolar: 110 },
+      { nombre: "gentleman edp", precio_dolar: 83 },
+      { nombre: "gentleman edp 60ml", precio_dolar: 68 },
+      { nombre: "armani profondo 105 edp", precio_dolar: 111 },
+      { nombre: "sauvage edp", precio_dolar: 111 },
+      { nombre: "sauvage edt", precio_dolar: 92 },
+      { nombre: "sauvage elixir 60ml", precio_dolar: 128 },
+      { nombre: "212 vip black", precio_dolar: 73 },
+      { nombre: "club de nuit iconic", precio_dolar: 43 },
+      { nombre: "club de nuit untold", precio_dolar: 43 },
+      { nombre: "club de nuit urban elixir", precio_dolar: 37.5 },
+      { nombre: "anfar date night", precio_dolar: 44 },
+      { nombre: "the most wanted edp inten", precio_dolar: 90 },
+      { nombre: "the most wanted parfum", precio_dolar: 81 },
+      { nombre: "bvlgary man in black edp", precio_dolar: 93 },
+      { nombre: "amethyst", precio_dolar: 34.5 },
+      { nombre: "mayar", precio_dolar: 26 },
+      { nombre: "hawas", precio_dolar: 28 },
+      { nombre: "erba pura", precio_dolar: 205 },
+      { nombre: "atlas 55ml", precio_dolar: 51 },
+      { nombre: "philos pura", precio_dolar: 23 },
+      { nombre: "precieux", precio_dolar: 49 },
+      { nombre: "alpine", precio_dolar: 23 },
+      { nombre: "club de nuit sillage", precio_dolar: 37 },
+      { nombre: "glacier ultra", precio_dolar: 23 },
+      { nombre: "eclaire", precio_dolar: 44 },
+      { nombre: "bharara king gold", precio_dolar: 73 },
+      { nombre: "jean lowe immortale", precio_dolar: 33 },
+      { nombre: "salvo", precio_dolar: 17.5 },
+      { nombre: "yeah (y ysl)", precio_dolar: 26 },
+      { nombre: "9pm kit", precio_dolar: 51 },
+      { nombre: "9 am kit", precio_dolar: 44 },
+      { nombre: "hawas ice", precio_dolar: 34 },
+      { nombre: "yara pink + candy kit", precio_dolar: 43 },
+      { nombre: "kit amber oud 75ml", precio_dolar: 76 },
+      { nombre: "kit armaf 30ml", precio_dolar: 71 },
+      { nombre: "game of spade win", precio_dolar: 91 },
+      { nombre: "parfums de marly layton", precio_dolar: 300 },
+      { nombre: "burberry hero edp", precio_dolar: 91 },
+      { nombre: "ck shock", precio_dolar: 28 },
+      { nombre: "club de nuit femenino", precio_dolar: 33 },
+      { nombre: "a men femenino", precio_dolar: 118 },
+      { nombre: "club de nuit intense fem", precio_dolar: 31 },
+      { nombre: "odessey candee edp", precio_dolar: 45 },
+      { nombre: "noble blush badee al oud", precio_dolar: 25 },
+      { nombre: "club de nuit 200 ml", precio_dolar: 54 },
+      { nombre: "one million parfum", precio_dolar: 74 },
+      { nombre: "odessey mega", precio_dolar: 39 },
+      { nombre: "jpg le male le parfum", precio_dolar: 78 },
+      { nombre: "vintage radio", precio_dolar: 32 },
+      { nombre: "pure aruba", precio_dolar: 33 },
+      { nombre: "confidential gold", precio_dolar: 24 },
+      { nombre: "haya rosa", precio_dolar: 26 },
+      { nombre: "hayaati florence", precio_dolar: 26 },
+      { nombre: "orientica amber rouge 80", precio_dolar: 64.5 },
+      { nombre: "delilah", precio_dolar: 25 },
+      { nombre: "musamam", precio_dolar: 46 },
+      { nombre: "oud saffron", precio_dolar: 68 },
+      { nombre: "fakhar gold", precio_dolar: 33 },
+      { nombre: "sakeena edp", precio_dolar: 25 },
+      { nombre: "mayar natural", precio_dolar: 30 },
+      { nombre: "club de nuit imperiale", precio_dolar: 37 },
+      { nombre: "hawas for her", precio_dolar: 49 },
+      { nombre: "9am femenino", precio_dolar: 33 },
+      { nombre: "spicebomb extreme", precio_dolar: 90 },
+      { nombre: "mercedes club black", precio_dolar: 44 },
+      { nombre: "b.a.d maison", precio_dolar: 22 },
+      { nombre: "panther", precio_dolar: 22 },
+      { nombre: "turathi brown 90 ml", precio_dolar: 36 },
+      { nombre: "dubai night", precio_dolar: 55 }
+    ];
+
+    const buscador = document.getElementById("buscador");
+    const precioDiv = document.getElementById("precio");
+    const cotizacionInput = document.getElementById("cotizacion");
+
+    buscador.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const nombre = buscador.value.toLowerCase().trim();
+        const cotizacion = parseFloat(cotizacionInput.value);
+
+        const resultado = productos.find(p =>
+          p.nombre.toLowerCase().includes(nombre)
+        );
+
+        if (resultado) {
+          const precioPesos = (resultado.precio_dolar * cotizacion).toLocaleString("es-AR", {
+            style: "currency",
+            currency: "ARS",
+            minimumFractionDigits: 0
+          });
+          precioDiv.textContent = `Precio: ${precioPesos}`;
+        } else {
+          precioDiv.textContent = "Perfume no encontrado";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
