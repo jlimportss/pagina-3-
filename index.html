@@ -58,7 +58,7 @@
     </div>
     <p>HAGA CLICK PARA ELEGIR</p>
     <input type="text" id="buscador" placeholder="BUSCA TU PERFUME">
-    <div id="precio">PRECIO: $00000 ARS</div>
+    <div id="precio"></div>
   </div>
 
   <script>
@@ -125,11 +125,10 @@
         if (encontrado) {
           const precioPesos = Math.round(encontrado[tipo] * cotizacion);
           divPrecio.textContent = "PRECIO: $" + precioPesos.toLocaleString("es-AR") + " ARS";
-          divPrecio.style.display = "block";
         } else {
           divPrecio.textContent = "Perfume no encontrado.";
-          divPrecio.style.display = "block";
         }
+        divPrecio.style.display = "block";
       }
     });
   </script>
